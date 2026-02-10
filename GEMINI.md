@@ -40,6 +40,13 @@ The application currently includes the following tools:
 26. **Protect PDF:** Encrypt PDF with a password.
 27. **Unlock PDF:** Remove password protection from a PDF.
 28. **Add Page Numbers:** Insert page numbers into a PDF document.
+29. **Video Merger:** Combine multiple video clips into one.
+30. **Video Cropper:** Crop video dimensions.
+31. **Image Converter:** Convert between image formats (PNG, JPG, WEBP).
+32. **Archive Extractor:** Extract files from ZIP archives.
+33. **Document Converter:** Convert DOCX/MD/HTML to PDF/HTML.
+34. **Font Viewer:** Inspect and preview fonts.
+36. **HAP Encoder:** Convert videos to HAP, HAP Alpha, or HAP Q.
 
 ## Architecture
 

@@ -30,10 +30,28 @@ const Home: React.FC = () => {
       icon: 'video'
     },
     {
+      path: '/hap-encoder',
+      title: 'HAP Encoder',
+      description: 'Convert videos to HAP/HAP Q for VJ software.',
+      icon: 'video'
+    },
+    {
+      path: '/video-merger',
+      title: 'Merge Videos',
+      description: 'Combine multiple video clips into one.',
+      icon: 'film'
+    },
+    {
       path: '/video-trimmer',
       title: 'Video Trimmer',
       description: 'Trim or cut video clips by specifying start and end times.',
       icon: 'cut'
+    },
+    {
+      path: '/video-cropper',
+      title: 'Crop Video',
+      description: 'Crop video to a specific area.',
+      icon: 'crop'
     },
     {
       path: '/video-muter',
@@ -124,6 +142,36 @@ const Home: React.FC = () => {
       title: 'Audio Equalizer',
       description: 'Adjust frequencies with a 10-band equalizer.',
       icon: 'sliders'
+    },
+    {
+      path: '/image-converter',
+      title: 'Image Converter',
+      description: 'Convert images to PNG, JPEG, WEBP, or BMP.',
+      icon: 'image'
+    },
+    {
+      path: '/archive-extractor',
+      title: 'Archive Extractor',
+      description: 'Extract files from ZIP archives.',
+      icon: 'folder-open'
+    },
+    {
+      path: '/document-converter',
+      title: 'Document Converter',
+      description: 'Convert DOCX, Markdown, or HTML to PDF/HTML.',
+      icon: 'file-text'
+    },
+    {
+      path: '/font-converter',
+      title: 'Font Viewer',
+      description: 'Inspect and preview TTF/OTF/WOFF fonts.',
+      icon: 'font'
+    },
+    {
+      path: '/ebook-converter',
+      title: 'Ebook Converter',
+      description: 'Convert EPUB to text or PDF.',
+      icon: 'book'
     },
     {
       path: '/pdf-merge',

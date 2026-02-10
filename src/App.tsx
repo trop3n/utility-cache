@@ -29,6 +29,14 @@ import PDFToImages from './tools/PDFToImages/PDFToImages'
 import PDFProtect from './tools/PDFProtect/PDFProtect'
 import PDFUnlock from './tools/PDFUnlock/PDFUnlock'
 import PDFPageNumber from './tools/PDFPageNumber/PDFPageNumber'
+import VideoMerger from './tools/VideoMerger/VideoMerger'
+import VideoCropper from './tools/VideoCropper/VideoCropper'
+import ImageConverter from './tools/ImageConverter/ImageConverter'
+import ArchiveExtractor from './tools/ArchiveTools/ArchiveExtractor'
+import HapEncoder from './tools/HapEncoder/HapEncoder'
+import DocumentConverter from './tools/DocumentConverter/DocumentConverter'
+import FontConverter from './tools/FontConverter/FontConverter'
+import EbookConverter from './tools/EbookConverter/EbookConverter'
 import './App.css'
 
 function App() {
@@ -41,7 +49,9 @@ function App() {
           <Route path="/image-resizer" element={<ImageResizer />} />
           <Route path="/qrcode" element={<QRCodeGenerator />} />
           <Route path="/video-converter" element={<VideoConverter />} />
+          <Route path="/video-merger" element={<VideoMerger />} />
           <Route path="/video-trimmer" element={<VideoTrimmer />} />
+          <Route path="/video-cropper" element={<VideoCropper />} />
           <Route path="/video-muter" element={<VideoMuter />} />
           <Route path="/video-to-audio" element={<VideoToAudio />} />
           <Route path="/video-compressor" element={<VideoCompressor />} />
@@ -57,6 +67,12 @@ function App() {
           <Route path="/audio-reverse" element={<AudioReverse />} />
           <Route path="/voice-recorder" element={<VoiceRecorder />} />
           <Route path="/equalizer" element={<Equalizer />} />
+          <Route path="/image-converter" element={<ImageConverter />} />
+          <Route path="/archive-extractor" element={<ArchiveExtractor />} />
+          <Route path="/hap-encoder" element={<HapEncoder />} />
+          <Route path="/document-converter" element={<DocumentConverter />} />
+          <Route path="/font-converter" element={<FontConverter />} />
+          <Route path="/ebook-converter" element={<EbookConverter />} />
           <Route path="/pdf-merge" element={<PDFMerge />} />
           <Route path="/pdf-split" element={<PDFSplit />} />
           <Route path="/pdf-rotate" element={<PDFRotate />} />
