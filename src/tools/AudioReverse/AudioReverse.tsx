@@ -14,7 +14,7 @@ const AudioReverse: React.FC = () => {
       await ffmpeg.writeFile('input', await fetchFile(audioFile));
       await ffmpeg.exec(['-i', 'input', '-af', 'areverse', 'output.mp3']);
       const data = await ffmpeg.readFile('output.mp3');
-      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer], { type: 'audio/mp3' })));
+      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'audio/mp3' })));
       setStatus('completed');
     } catch (e) { setStatus('error'); }
   };
@@ -22,11 +22,19 @@ const AudioReverse: React.FC = () => {
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
       <h2>Reverse Audio</h2>
+      {!loaded && (
+        <button onClick={load} className="primary" style={{ marginBottom: '20px' }}>Initialize Engine</button>
+      )}
       <input type="file" accept="audio/*" onChange={e => setAudioFile(e.target.files?.[0] || null)} />
-      {audioFile && (
+      {audioFile && loaded && (
         <div style={{ marginTop: '20px' }}>
           <button onClick={reverseAudio} className="primary" disabled={status === 'processing'}>Reverse Audio</button>
+          
+          {status === 'processing' && <p>Progress: {progress}%</p>}
+
           {downloadUrl && <div style={{ marginTop: '20px' }}><a href={downloadUrl} download="reversed.mp3" className="button success">Download Reversed</a></div>}
+          
+          <p style={{ fontSize: '0.7rem', color: '#666' }}>{message}</p>
         </div>
       )}
     </div>

@@ -23,7 +23,7 @@ const AudioSpeedPitch: React.FC = () => {
       
       await ffmpeg.exec(['-i', inputName, '-af', filter, outputName]);
       const data = await ffmpeg.readFile(outputName);
-      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer], { type: 'audio/mp3' })));
+      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'audio/mp3' })));
       setStatus('completed');
     } catch (e) { setStatus('error'); }
   };
@@ -31,8 +31,11 @@ const AudioSpeedPitch: React.FC = () => {
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto' }}>
       <h2>Audio Speed & Pitch</h2>
+      {!loaded && (
+        <button onClick={load} className="primary" style={{ marginBottom: '20px' }}>Initialize Engine</button>
+      )}
       <input type="file" accept="audio/*" onChange={e => setAudioFile(e.target.files?.[0] || null)} />
-      {audioFile && (
+      {audioFile && loaded && (
         <div style={{ marginTop: '20px' }}>
           <div>Speed: {speed}x</div>
           <input type="range" min="0.5" max="2.0" step="0.1" value={speed} onChange={e => setSpeed(parseFloat(e.target.value))} />
@@ -40,7 +43,11 @@ const AudioSpeedPitch: React.FC = () => {
           <input type="range" min="0.5" max="2.0" step="0.1" value={pitch} onChange={e => setPitch(parseFloat(e.target.value))} />
           
           <button onClick={processAudio} className="primary" style={{ display: 'block', margin: '20px auto' }} disabled={status === 'processing'}>Apply Changes</button>
+          
+          {status === 'processing' && <p>Progress: {progress}%</p>}
+
           {downloadUrl && <a href={downloadUrl} download="processed.mp3" className="button success">Download</a>}
+          <p style={{ fontSize: '0.7rem', color: '#666' }}>{message}</p>
         </div>
       )}
     </div>

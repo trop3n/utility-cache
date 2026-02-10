@@ -18,7 +18,7 @@ const PDFRotate: React.FC = () => {
         page.setRotation(degrees(currentRotation + rotation));
       });
       const pdfBytes = await pdf.save();
-      setDownloadUrl(URL.createObjectURL(new Blob([pdfBytes], { type: 'application/pdf' })));
+      setDownloadUrl(URL.createObjectURL(new Blob([pdfBytes as any], { type: 'application/pdf' })));
     } catch (e) { console.error(e); }
     finally { setIsProcessing(false); }
   };

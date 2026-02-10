@@ -40,7 +40,7 @@ const VideoSpeedChanger: React.FC = () => {
       ]);
 
       const data = await ffmpeg.readFile(outputName);
-      const url = URL.createObjectURL(new Blob([(data as Uint8Array).buffer], { type: 'video/mp4' }));
+      const url = URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'video/mp4' }));
       
       setDownloadUrl(url);
       setStatus('completed');

@@ -3,7 +3,7 @@ import { fetchFile } from '@ffmpeg/util';
 import { useFFmpeg } from '../../hooks/useFFmpeg';
 
 const AudioJoiner: React.FC = () => {
-  const { ffmpeg, loaded, load, status, setStatus, progress, message } = useFFmpeg();
+  const { ffmpeg, loaded, load, status, setStatus, message } = useFFmpeg();
   const [files, setFiles] = useState<File[]>([]);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
 
@@ -33,7 +33,7 @@ const AudioJoiner: React.FC = () => {
 
       await ffmpeg.exec(args);
       const data = await ffmpeg.readFile('output.mp3');
-      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer], { type: 'audio/mp3' })));
+      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'audio/mp3' })));
       setStatus('completed');
     } catch (e) { setStatus('error'); }
   };

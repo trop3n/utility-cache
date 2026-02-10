@@ -28,7 +28,7 @@ const PDFToImages: React.FC = () => {
         canvas.height = viewport.height;
         canvas.width = viewport.width;
 
-        await page.render({ canvasContext: context, viewport }).promise;
+        await page.render({ canvasContext: context, viewport } as any).promise;
         imageUrls.push(canvas.toDataURL('image/png'));
       }
       setImages(imageUrls);

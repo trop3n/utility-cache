@@ -3,7 +3,7 @@ import { fetchFile } from '@ffmpeg/util';
 import { useFFmpeg } from '../../hooks/useFFmpeg';
 
 const VideoResizer: React.FC = () => {
-  const { ffmpeg, loaded, load, status, setStatus, progress, message } = useFFmpeg();
+  const { ffmpeg, loaded, load, status, setStatus } = useFFmpeg();
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [width, setWidth] = useState(1280);
   const [height, setHeight] = useState(720);
@@ -28,7 +28,7 @@ const VideoResizer: React.FC = () => {
       // scale=w:h. -2 ensures even dimensions for many codecs
       await ffmpeg.exec(['-i', inputName, '-vf', `scale=${width}:${height}`, '-c:a', 'copy', outputName]);
       const data = await ffmpeg.readFile(outputName);
-      const url = URL.createObjectURL(new Blob([(data as Uint8Array).buffer], { type: 'video/mp4' }));
+      const url = URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'video/mp4' }));
       setDownloadUrl(url);
       setStatus('completed');
     } catch (error) {

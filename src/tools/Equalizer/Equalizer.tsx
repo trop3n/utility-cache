@@ -42,7 +42,7 @@ const Equalizer: React.FC = () => {
 
       await ffmpeg.exec(['-i', inputName, '-af', filterChain, outputName]);
       const data = await ffmpeg.readFile(outputName);
-      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer], { type: 'audio/mp3' })));
+      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'audio/mp3' })));
       setStatus('completed');
     } catch (e) { 
         console.error(e);
@@ -95,9 +95,9 @@ const Equalizer: React.FC = () => {
                     max="20" 
                     value={gain} 
                     onChange={(e) => updateGain(i, parseInt(e.target.value))}
-                    orient="vertical" // Firefox specific, requires CSS rotation for others usually
+                    // orient="vertical" // Firefox specific
                     style={{ 
-                        writingMode: 'bt-lr', /* IE */
+                        writingMode: 'bt-lr' as any, /* IE */
                         WebkitAppearance: 'slider-vertical', /* WebKit */
                         width: '8px',
                         height: '150px',

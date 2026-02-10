@@ -53,7 +53,7 @@ const PDFSplit: React.FC = () => {
         const copiedPages = await newPdf.copyPages(pdf, pagesToExtract);
         copiedPages.forEach(page => newPdf.addPage(page));
         const pdfBytes = await newPdf.save();
-        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const blob = new Blob([pdfBytes as any], { type: 'application/pdf' });
         setDownloadUrls([{ url: URL.createObjectURL(blob), name: 'extracted.pdf' }]);
       } else {
         // Split into separate files
@@ -63,7 +63,7 @@ const PDFSplit: React.FC = () => {
           const [copiedPage] = await newPdf.copyPages(pdf, [pagesToExtract[i]]);
           newPdf.addPage(copiedPage);
           const pdfBytes = await newPdf.save();
-          const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+          const blob = new Blob([pdfBytes as any], { type: 'application/pdf' });
           newUrls.push({ url: URL.createObjectURL(blob), name: `page-${i + 1}.pdf` });
         }
         setDownloadUrls(newUrls);

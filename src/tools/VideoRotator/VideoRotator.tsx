@@ -22,7 +22,7 @@ const VideoRotator: React.FC = () => {
       
       await ffmpeg.exec(['-i', inputName, '-vf', filter, '-c:a', 'copy', outputName]);
       const data = await ffmpeg.readFile(outputName);
-      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer], { type: 'video/mp4' })));
+      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'video/mp4' })));
       setStatus('completed');
     } catch (e) { setStatus('error'); }
   };
@@ -30,8 +30,13 @@ const VideoRotator: React.FC = () => {
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto' }}>
       <h2>Video Rotator / Flipper</h2>
+      
+      {!loaded && (
+        <button onClick={load} className="primary" style={{ marginBottom: '20px' }}>Initialize Engine</button>
+      )}
+
       <input type="file" accept="video/*" onChange={e => setVideoFile(e.target.files?.[0] || null)} />
-      {videoFile && (
+      {videoFile && loaded && (
         <div style={{ marginTop: '20px' }}>
           <select value={rotation} onChange={e => setRotation(e.target.value)} style={{ padding: '8px', marginRight: '10px' }}>
             <option value="1">90° Clockwise</option>
@@ -40,6 +45,9 @@ const VideoRotator: React.FC = () => {
             <option value="vflip">Flip Vertical</option>
           </select>
           <button onClick={rotateVideo} className="primary" disabled={status === 'processing'}>Rotate</button>
+          
+          {status === 'processing' && <p>Progress: {progress}%</p>}
+          
           {downloadUrl && <a href={downloadUrl} download="rotated.mp4" className="button success">Download</a>}
         </div>
       )}

@@ -14,6 +14,7 @@
   "dependencies": {
     "@ffmpeg/ffmpeg": "^0.12.15",
     "@ffmpeg/util": "^0.12.2",
+    "@pdfsmaller/pdf-encrypt-lite": "^1.0.1",
     "@types/qrcode.react": "^1.0.5",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^5.4.624",

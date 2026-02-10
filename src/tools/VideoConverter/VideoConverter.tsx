@@ -66,7 +66,7 @@ const VideoConverter: React.FC = () => {
       await ffmpeg.exec(['-i', inputName, outputName]);
 
       const data = await ffmpeg.readFile(outputName);
-      const url = URL.createObjectURL(new Blob([(data as Uint8Array).buffer], { type: `video/${outputFormat}` }));
+      const url = URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: `video/${outputFormat}` }));
       
       setDownloadUrl(url);
       setStatus('completed');

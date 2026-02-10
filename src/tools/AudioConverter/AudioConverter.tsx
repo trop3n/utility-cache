@@ -17,7 +17,7 @@ const AudioConverter: React.FC = () => {
       await ffmpeg.writeFile(inputName, await fetchFile(audioFile));
       await ffmpeg.exec(['-i', inputName, outputName]);
       const data = await ffmpeg.readFile(outputName);
-      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer], { type: `audio/${outputFormat}` })));
+      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: `audio/${outputFormat}` })));
       setStatus('completed');
     } catch (e) { setStatus('error'); }
   };
@@ -25,8 +25,15 @@ const AudioConverter: React.FC = () => {
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto' }}>
       <h2>Audio Converter</h2>
+      
+      {!loaded && (
+        <button onClick={load} className="primary" style={{ marginBottom: '20px' }}>
+            {status === 'loading' ? 'Loading Engine...' : 'Initialize Engine'}
+        </button>
+      )}
+
       <input type="file" accept="audio/*" onChange={e => setAudioFile(e.target.files?.[0] || null)} />
-      {audioFile && (
+      {audioFile && loaded && (
         <div style={{ marginTop: '20px' }}>
           <select value={outputFormat} onChange={e => setOutputFormat(e.target.value)} style={{ padding: '8px', marginRight: '10px' }}>
             <option value="mp3">MP3</option>
@@ -35,6 +42,9 @@ const AudioConverter: React.FC = () => {
             <option value="aac">AAC</option>
           </select>
           <button onClick={convertAudio} className="primary" disabled={status === 'processing'}>Convert</button>
+          
+          {status === 'processing' && <p>Progress: {progress}%</p>}
+          
           {downloadUrl && <a href={downloadUrl} download={`converted.${outputFormat}`} className="button success">Download</a>}
           <p style={{ fontSize: '0.7rem', color: '#666' }}>{message}</p>
         </div>

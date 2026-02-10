@@ -36,7 +36,7 @@ const VideoToAudio: React.FC = () => {
       await ffmpeg.exec(args);
 
       const data = await ffmpeg.readFile(outputName);
-      const url = URL.createObjectURL(new Blob([(data as Uint8Array).buffer], { type: `audio/${outputFormat}` }));
+      const url = URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: `audio/${outputFormat}` }));
       
       setDownloadUrl(url);
       setStatus('completed');

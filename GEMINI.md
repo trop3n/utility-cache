@@ -37,6 +37,9 @@ The application currently includes the following tools:
 23. **PDF Rotate:** Rotate PDF document pages.
 24. **Images to PDF:** Convert multiple images into a single PDF.
 25. **PDF to Images:** Convert PDF pages into individual PNG images.
+26. **Protect PDF:** Encrypt PDF with a password.
+27. **Unlock PDF:** Remove password protection from a PDF.
+28. **Add Page Numbers:** Insert page numbers into a PDF document.
 
 ## Architecture
 

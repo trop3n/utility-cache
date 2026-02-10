@@ -26,7 +26,7 @@ const ImagesToPDF: React.FC = () => {
         page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height });
       }
       const pdfBytes = await pdfDoc.save();
-      setDownloadUrl(URL.createObjectURL(new Blob([pdfBytes], { type: 'application/pdf' })));
+      setDownloadUrl(URL.createObjectURL(new Blob([pdfBytes as any], { type: 'application/pdf' })));
     } catch (e) { console.error(e); }
     finally { setIsProcessing(false); }
   };

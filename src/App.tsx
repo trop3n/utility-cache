@@ -26,6 +26,9 @@ import PDFSplit from './tools/PDFSplit/PDFSplit'
 import PDFRotate from './tools/PDFRotate/PDFRotate'
 import ImagesToPDF from './tools/ImagesToPDF/ImagesToPDF'
 import PDFToImages from './tools/PDFToImages/PDFToImages'
+import PDFProtect from './tools/PDFProtect/PDFProtect'
+import PDFUnlock from './tools/PDFUnlock/PDFUnlock'
+import PDFPageNumber from './tools/PDFPageNumber/PDFPageNumber'
 import './App.css'
 
 function App() {
@@ -59,6 +62,9 @@ function App() {
           <Route path="/pdf-rotate" element={<PDFRotate />} />
           <Route path="/images-to-pdf" element={<ImagesToPDF />} />
           <Route path="/pdf-to-images" element={<PDFToImages />} />
+          <Route path="/pdf-protect" element={<PDFProtect />} />
+          <Route path="/pdf-unlock" element={<PDFUnlock />} />
+          <Route path="/pdf-page-number" element={<PDFPageNumber />} />
         </Routes>
       </Layout>
     </Router>

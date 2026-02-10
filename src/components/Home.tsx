@@ -154,6 +154,24 @@ const Home: React.FC = () => {
       title: 'PDF to Images',
       description: 'Convert PDF pages into PNG images.',
       icon: 'file-image'
+    },
+    {
+      path: '/pdf-protect',
+      title: 'Protect PDF',
+      description: 'Encrypt your PDF with a password.',
+      icon: 'lock'
+    },
+    {
+      path: '/pdf-unlock',
+      title: 'Unlock PDF',
+      description: 'Remove password protection from a PDF.',
+      icon: 'unlock'
+    },
+    {
+      path: '/pdf-page-number',
+      title: 'Add Page Numbers',
+      description: 'Insert page numbers into a PDF document.',
+      icon: 'list-ol'
     }
   ];
 
