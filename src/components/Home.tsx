@@ -94,6 +94,66 @@ const Home: React.FC = () => {
       title: 'Volume Changer',
       description: 'Increase or decrease audio volume.',
       icon: 'volume-up'
+    },
+    {
+      path: '/audio-joiner',
+      title: 'Audio Joiner',
+      description: 'Merge multiple audio files into one.',
+      icon: 'plus'
+    },
+    {
+      path: '/audio-speed-pitch',
+      title: 'Audio Speed & Pitch',
+      description: 'Change playback speed and pitch of audio.',
+      icon: 'music'
+    },
+    {
+      path: '/audio-reverse',
+      title: 'Reverse Audio',
+      description: 'Play audio backwards.',
+      icon: 'undo'
+    },
+    {
+      path: '/voice-recorder',
+      title: 'Voice Recorder',
+      description: 'Record audio from microphone.',
+      icon: 'microphone'
+    },
+    {
+      path: '/equalizer',
+      title: 'Audio Equalizer',
+      description: 'Adjust frequencies with a 10-band equalizer.',
+      icon: 'sliders'
+    },
+    {
+      path: '/pdf-merge',
+      title: 'PDF Merge',
+      description: 'Combine multiple PDF files into one.',
+      icon: 'file-pdf'
+    },
+    {
+      path: '/pdf-split',
+      title: 'PDF Split',
+      description: 'Extract pages or split PDF into single pages.',
+      icon: 'file-pdf'
+    },
+    {
+      path: '/pdf-rotate',
+      title: 'PDF Rotate',
+      description: 'Rotate PDF pages.',
+      icon: 'rotate'
+    },
+    {
+      path: '/images-to-pdf',
+      title: 'Images to PDF',
+      description: 'Convert JPG/PNG images into a PDF document.',
+      icon: 'image'
+    },
+    {
+      path: '/pdf-to-images',
+      title: 'PDF to Images',
+      description: 'Convert PDF pages into PNG images.',
+      icon: 'file-image'
     }
   ];
 

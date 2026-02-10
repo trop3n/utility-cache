@@ -27,6 +27,16 @@ The application currently includes the following tools:
 13. **Audio Cutter:** Trim or cut audio clips.
 14. **Audio Converter:** Convert audio between multiple formats (MP3, WAV, OGG, AAC).
 15. **Volume Changer:** Adjust audio volume level.
+16. **Audio Joiner:** Merge multiple audio files into a single track.
+17. **Audio Speed & Pitch:** Independently adjust playback speed and pitch.
+18. **Reverse Audio:** Play audio backwards.
+19. **Voice Recorder:** Record audio directly from microphone.
+20. **Audio Equalizer:** 10-band equalizer with presets (Bass Boost, Pop, Rock, etc.).
+21. **PDF Merge:** Combine multiple PDF documents into one.
+22. **PDF Split:** Extract specific pages or split a PDF into individual page files.
+23. **PDF Rotate:** Rotate PDF document pages.
+24. **Images to PDF:** Convert multiple images into a single PDF.
+25. **PDF to Images:** Convert PDF pages into individual PNG images.
 
 ## Architecture
 

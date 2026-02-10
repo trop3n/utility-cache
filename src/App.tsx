@@ -16,6 +16,16 @@ import Recorder from './tools/Recorder/Recorder'
 import AudioCutter from './tools/AudioCutter/AudioCutter'
 import AudioConverter from './tools/AudioConverter/AudioConverter'
 import VolumeChanger from './tools/VolumeChanger/VolumeChanger'
+import AudioJoiner from './tools/AudioJoiner/AudioJoiner'
+import AudioSpeedPitch from './tools/AudioSpeedPitch/AudioSpeedPitch'
+import AudioReverse from './tools/AudioReverse/AudioReverse'
+import VoiceRecorder from './tools/VoiceRecorder/VoiceRecorder'
+import Equalizer from './tools/Equalizer/Equalizer'
+import PDFMerge from './tools/PDFMerge/PDFMerge'
+import PDFSplit from './tools/PDFSplit/PDFSplit'
+import PDFRotate from './tools/PDFRotate/PDFRotate'
+import ImagesToPDF from './tools/ImagesToPDF/ImagesToPDF'
+import PDFToImages from './tools/PDFToImages/PDFToImages'
 import './App.css'
 
 function App() {
@@ -39,6 +49,16 @@ function App() {
           <Route path="/audio-cutter" element={<AudioCutter />} />
           <Route path="/audio-converter" element={<AudioConverter />} />
           <Route path="/volume-changer" element={<VolumeChanger />} />
+          <Route path="/audio-joiner" element={<AudioJoiner />} />
+          <Route path="/audio-speed-pitch" element={<AudioSpeedPitch />} />
+          <Route path="/audio-reverse" element={<AudioReverse />} />
+          <Route path="/voice-recorder" element={<VoiceRecorder />} />
+          <Route path="/equalizer" element={<Equalizer />} />
+          <Route path="/pdf-merge" element={<PDFMerge />} />
+          <Route path="/pdf-split" element={<PDFSplit />} />
+          <Route path="/pdf-rotate" element={<PDFRotate />} />
+          <Route path="/images-to-pdf" element={<ImagesToPDF />} />
+          <Route path="/pdf-to-images" element={<PDFToImages />} />
         </Routes>
       </Layout>
     </Router>
