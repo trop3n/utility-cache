@@ -1,0 +1,116 @@
+#root {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.app-header {
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #444;
+}
+
+.app-main {
+  flex: 1;
+  padding: 1rem;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.tool-card {
+  border-radius: 12px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  border: 1px solid #444;
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.tool-card:hover {
+  transform: translateY(-5px);
+  border-color: #646cff;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.tool-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.tool-card p {
+  color: #888;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+@media (prefers-color-scheme: light) {
+  .app-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ddd;
+  }
+  .tool-card {
+    background-color: #ffffff;
+    border-color: #eee;
+  }
+  .tool-card:hover {
+    border-color: #646cff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+  .tool-card p {
+    color: #666;
+  }
+}
+
+/* Common form elements */
+input[type="text"],
+input[type="number"],
+textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background-color: #1a1a1a;
+  color: white;
+  font-family: inherit;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+@media (prefers-color-scheme: light) {
+  input[type="text"],
+  input[type="number"],
+  textarea {
+    background-color: #fff;
+    border-color: #ccc;
+    color: #213547;
+  }
+}
+
+button.primary {
+  background-color: #646cff;
+  color: white;
+}
+
+button.primary:hover {
+  background-color: #535bf2;
+}
+
+button.success {
+  background-color: #27ae60;
+  color: white;
+}
+
+button.success:hover {
+  background-color: #219150;
+}
