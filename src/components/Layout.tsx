@@ -6,9 +6,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const navItems = [
     { path: '/', label: 'Home' },
-    { path: '/text-converter', label: 'Text Converter' },
-    { path: '/image-resizer', label: 'Image Resizer' },
-    { path: '/qrcode', label: 'QR Code' },
+    { path: '/text-converter', label: 'Text' },
+    { path: '/image-resizer', label: 'Image' },
+    { path: '/qrcode', label: 'QR' },
+    { path: '/video-converter', label: 'Video' },
   ];
 
   return (

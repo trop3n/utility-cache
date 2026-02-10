@@ -15,6 +15,18 @@ The application currently includes the following tools:
 1.  **Text Case Converter:** Convert text to UPPERCASE, lowercase, or Title Case.
 2.  **Image Resizer:** Resize images by defining width and height (maintaining aspect ratio).
 3.  **QR Code Generator:** Generate custom QR codes from text or URLs with color customization.
+4.  **Video Converter:** Convert video files to MP4, WebM, MKV, or GIF using FFmpeg.wasm.
+5.  **Video Trimmer:** Trim video clips by start and end timestamps.
+6.  **Video Muter:** Remove audio tracks from videos.
+7.  **Video to Audio:** Extract audio (MP3/WAV) from video files.
+8.  **Video Compressor:** Reduce video file size by adjusting CRF quality settings.
+9.  **Video Speed Changer:** Speed up or slow down video (0.5x to 2.0x) including audio pitch adjustment.
+10. **Video Resizer:** Change video dimensions (width/height).
+11. **Video Rotator:** Rotate (90/180/270) or flip (horizontal/vertical) videos.
+12. **Screen & Camera Recorder:** Capture screen output or webcam with audio directly.
+13. **Audio Cutter:** Trim or cut audio clips.
+14. **Audio Converter:** Convert audio between multiple formats (MP3, WAV, OGG, AAC).
+15. **Volume Changer:** Adjust audio volume level.
 
 ## Architecture
 
