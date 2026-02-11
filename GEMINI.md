@@ -47,6 +47,8 @@ The application currently includes the following tools:
 33. **Document Converter:** Convert DOCX/MD/HTML to PDF/HTML.
 34. **Font Viewer:** Inspect and preview fonts.
 36. **HAP Encoder:** Convert videos to HAP, HAP Alpha, or HAP Q.
+37. **Excel to PDF:** Convert XLSX/XLS/CSV to PDF.
+38. **PDF to Office:** Extract text from PDF to DOCX/TXT/HTML.
 
 ## Architecture
 

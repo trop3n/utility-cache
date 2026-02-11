@@ -174,6 +174,18 @@ const Home: React.FC = () => {
       icon: 'book'
     },
     {
+      path: '/pdf-to-office',
+      title: 'PDF to Word/Text',
+      description: 'Convert PDF to DOCX, Text, or HTML.',
+      icon: 'file-word'
+    },
+    {
+      path: '/excel-to-pdf',
+      title: 'Excel to PDF',
+      description: 'Convert Excel spreadsheets to PDF.',
+      icon: 'file-excel'
+    },
+    {
       path: '/pdf-merge',
       title: 'PDF Merge',
       description: 'Combine multiple PDF files into one.',
