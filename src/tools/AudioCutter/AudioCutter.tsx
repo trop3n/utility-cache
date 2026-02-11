@@ -28,7 +28,8 @@ const AudioCutter: React.FC = () => {
       // -ss start -to end -c copy (if same format) or re-encode
       await ffmpeg.exec(['-i', inputName, '-ss', startTime, '-to', endTime, '-c', 'copy', outputName]);
       const data = await ffmpeg.readFile(outputName);
-      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: audioFile.type })));
+      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
+      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: audioFile.type || 'audio/mpeg' })));
       setStatus('completed');
     } catch (e) { setStatus('error'); }
   };

@@ -25,10 +25,13 @@ const VideoResizer: React.FC = () => {
 
     try {
       await ffmpeg.writeFile(inputName, await fetchFile(videoFile));
-      // scale=w:h. -2 ensures even dimensions for many codecs
-      await ffmpeg.exec(['-i', inputName, '-vf', `scale=${width}:${height}`, '-c:a', 'copy', outputName]);
+      // Ensure even dimensions (required by libx264 and many other codecs)
+      const evenW = Math.round(width / 2) * 2;
+      const evenH = Math.round(height / 2) * 2;
+      await ffmpeg.exec(['-i', inputName, '-vf', `scale=${evenW}:${evenH}`, '-c:a', 'copy', outputName]);
       const data = await ffmpeg.readFile(outputName);
       const url = URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'video/mp4' }));
+      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
       setDownloadUrl(url);
       setStatus('completed');
     } catch (error) {

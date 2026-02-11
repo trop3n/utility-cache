@@ -28,26 +28,27 @@ const EbookConverter: React.FC = () => {
       // Iterate over spine to get all text
       let fullText = '';
       const spine = book.spine;
-      
+
       for (const section of (spine as any).items) {
-         // section.load(book.load.bind(book)) ... epubjs extraction is async and tricky
-         // We can use the 'url' to fetch text if we can access the internal zip.
-         // epubjs abstracts this.
-         // Simpler approach: Iterate spine items, load them, extract textContent.
-         const item = book.spine.get(section.href);
+         // Use the spine item index for reliable lookup
+         const item = book.spine.get(section.index);
          if (item) {
-             const doc = await item.load(book.load.bind(book)) as any;
-             // doc is a Document/XML
-             if (doc && 'body' in doc) {
-                 fullText += (doc.body.textContent || '') + '\n\n';
-             } else if (doc && 'textContent' in doc) {
-                 fullText += (doc.textContent || '') + '\n\n';
+             try {
+               const doc = await item.load(book.load.bind(book)) as any;
+               if (doc && 'body' in doc) {
+                   fullText += (doc.body.textContent || '') + '\n\n';
+               } else if (doc && 'textContent' in doc) {
+                   fullText += (doc.textContent || '') + '\n\n';
+               }
+             } catch (e) {
+               console.warn('Failed to load spine item:', section.href, e);
              }
          }
       }
 
       if (outputFormat === 'txt') {
           const blob = new Blob([fullText], { type: 'text/plain' });
+          if (downloadUrl) URL.revokeObjectURL(downloadUrl);
           setDownloadUrl(URL.createObjectURL(blob));
       } else if (outputFormat === 'pdf') {
           const pdfDoc = await PDFDocument.create();
@@ -56,28 +57,43 @@ const EbookConverter: React.FC = () => {
           const { height } = page.getSize();
           const fontSize = 12;
           
-          const lines = fullText.split('\n');
-          let y = height - 50;
-          
+          // Simple text wrapping: break lines at a max character width
+          const maxCharsPerLine = 80;
+          const lineHeight = fontSize + 3;
+          const pageMargin = 50;
+
+          const wrapText = (text: string): string[] => {
+            const wrapped: string[] = [];
+            for (const rawLine of text.split('\n')) {
+              // Replace non-ASCII chars that Helvetica can't render with '?'
+              const line = rawLine.replace(/[^\x20-\x7E\t]/g, '');
+              if (line.trim().length === 0) {
+                wrapped.push('');
+                continue;
+              }
+              for (let i = 0; i < line.length; i += maxCharsPerLine) {
+                wrapped.push(line.substring(i, i + maxCharsPerLine));
+              }
+            }
+            return wrapped;
+          };
+
+          const lines = wrapText(fullText);
+          let y = height - pageMargin;
+
           for (const line of lines) {
-              // Very basic text wrapping/pagination logic needed
-              // For MVP, we just dump text and add pages if y < 50
-              // Ideally use a library that handles wrapping. pdf-lib drawText does not wrap automatically easily.
-              // We will just print lines and create new page.
-              if (y < 50) {
+              if (y < pageMargin) {
                   page = pdfDoc.addPage();
-                  y = height - 50;
+                  y = height - pageMargin;
               }
-              // Basic sanitization
-              const cleanLine = line.replace(/[^\x00-\x7F]/g, ""); // Remove non-ascii for standard font
-              
-              if (cleanLine.trim().length > 0) {
-                  page.drawText(cleanLine.substring(0, 90), { x: 50, y, size: fontSize, font }); // Truncate line for now
-                  y -= 15;
+              if (line.trim().length > 0) {
+                  page.drawText(line, { x: pageMargin, y, size: fontSize, font });
               }
+              y -= lineHeight;
           }
           
           const pdfBytes = await pdfDoc.save();
+          if (downloadUrl) URL.revokeObjectURL(downloadUrl);
           setDownloadUrl(URL.createObjectURL(new Blob([pdfBytes as any], { type: 'application/pdf' })));
       }
 

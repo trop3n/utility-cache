@@ -25,23 +25,51 @@ const VideoSpeedChanger: React.FC = () => {
 
     try {
       await ffmpeg.writeFile(inputName, await fetchFile(videoFile));
-      
+
       // Video speed: setpts=1/speed*PTS
-      // Audio speed: atempo=speed (atempo range is 0.5 to 2.0)
-      const videoFilter = `setpts=${(1/speed).toFixed(2)}*PTS`;
-      const audioFilter = `atempo=${speed.toFixed(2)}`;
-      
-      await ffmpeg.exec([
-        '-i', inputName, 
-        '-filter_complex', `[0:v]${videoFilter}[v];[0:a]${audioFilter}[a]`,
-        '-map', '[v]',
-        '-map', '[a]',
-        outputName
-      ]);
+      // Audio speed: atempo=speed (atempo only supports 0.5 to 100.0)
+      const videoFilter = `setpts=${(1/speed).toFixed(4)}*PTS`;
+
+      // Build atempo chain for values outside 0.5-2.0 range
+      const buildAtempoChain = (tempo: number): string => {
+        const filters: string[] = [];
+        let remaining = tempo;
+        while (remaining < 0.5) {
+          filters.push('atempo=0.5');
+          remaining /= 0.5;
+        }
+        while (remaining > 2.0) {
+          filters.push('atempo=2.0');
+          remaining /= 2.0;
+        }
+        filters.push(`atempo=${remaining.toFixed(4)}`);
+        return filters.join(',');
+      };
+
+      // Try with audio first, fall back to video-only
+      try {
+        const audioFilter = buildAtempoChain(speed);
+        await ffmpeg.exec([
+          '-i', inputName,
+          '-filter_complex', `[0:v]${videoFilter}[v];[0:a]${audioFilter}[a]`,
+          '-map', '[v]',
+          '-map', '[a]',
+          outputName
+        ]);
+      } catch {
+        // No audio stream - process video only
+        await ffmpeg.exec([
+          '-i', inputName,
+          '-vf', videoFilter,
+          '-an',
+          outputName
+        ]);
+      }
 
       const data = await ffmpeg.readFile(outputName);
       const url = URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'video/mp4' }));
       
+      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
       setDownloadUrl(url);
       setStatus('completed');
     } catch (error) {

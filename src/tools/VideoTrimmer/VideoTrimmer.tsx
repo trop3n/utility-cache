@@ -27,12 +27,13 @@ const VideoTrimmer: React.FC = () => {
     try {
       await ffmpeg.writeFile(inputName, await fetchFile(videoFile));
       
-      // -ss start_time -to end_time -c copy (fast trim without re-encoding)
-      await ffmpeg.exec(['-i', inputName, '-ss', startTime, '-to', endTime, '-c', 'copy', outputName]);
+      // -ss before -i enables fast seek (input seeking), then -to for end time
+      await ffmpeg.exec(['-ss', startTime, '-i', inputName, '-to', endTime, '-c', 'copy', '-avoid_negative_ts', 'make_zero', outputName]);
 
       const data = await ffmpeg.readFile(outputName);
       const url = URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'video/mp4' }));
       
+      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
       setDownloadUrl(url);
       setStatus('completed');
     } catch (error) {

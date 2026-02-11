@@ -17,13 +17,34 @@ const AudioSpeedPitch: React.FC = () => {
     try {
       await ffmpeg.writeFile(inputName, await fetchFile(audioFile));
       // rubato/atempo for speed, asetrate for pitch
-      // pitch change: asetrate=sample_rate*pitch,atempo=1/pitch
-      const sampleRate = 44100; 
-      const filter = `asetrate=${sampleRate * pitch},atempo=${(speed / pitch).toFixed(2)}`;
-      
+      // pitch change: asetrate=sample_rate*pitch,aresample=sample_rate,atempo=speed/pitch
+      const sampleRate = 44100;
+
+      // Build atempo chain - atempo only supports 0.5 to 100.0 per filter
+      // For values outside 0.5-2.0, chain multiple atempo filters
+      const buildAtempoChain = (tempo: number): string => {
+        const filters: string[] = [];
+        let remaining = tempo;
+        while (remaining < 0.5) {
+          filters.push('atempo=0.5');
+          remaining /= 0.5;
+        }
+        while (remaining > 2.0) {
+          filters.push('atempo=2.0');
+          remaining /= 2.0;
+        }
+        filters.push(`atempo=${remaining.toFixed(4)}`);
+        return filters.join(',');
+      };
+
+      const tempoValue = speed / pitch;
+      const atempoChain = buildAtempoChain(tempoValue);
+      const filter = `asetrate=${Math.round(sampleRate * pitch)},aresample=${sampleRate},${atempoChain}`;
+
       await ffmpeg.exec(['-i', inputName, '-af', filter, outputName]);
       const data = await ffmpeg.readFile(outputName);
-      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'audio/mp3' })));
+      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
+      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'audio/mpeg' })));
       setStatus('completed');
     } catch (e) { setStatus('error'); }
   };

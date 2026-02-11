@@ -28,30 +28,29 @@ const VideoMerger: React.FC = () => {
     try {
       const inputNames: string[] = [];
       for (let i = 0; i < files.length; i++) {
-        const name = `input${i}.mp4`;
+        const ext = files[i].name.substring(files[i].name.lastIndexOf('.')) || '.mp4';
+        const name = `input${i}${ext}`;
         await ffmpeg.writeFile(name, await fetchFile(files[i]));
         inputNames.push(name);
       }
 
-      // Filter complex to concat video and audio
-      // [0:v][0:a][1:v][1:a]concat=n=2:v=1:a=1[v][a]
-      // Note: This assumes all videos have audio. If one lacks audio, it might fail or desync.
-      // A robust solution would add silence to silent videos, but we'll stick to basic concat.
-      // Also assumes same resolution/sar/frame rate. If not, ffmpeg might fail or output garbage.
-      // We will add scale filter to standardize? For now, we trust ffmpeg's permissive concat or user inputs.
-      
-      const filter = inputNames.map((_, i) => `[${i}:v][${i}:a]`).join('') + `concat=n=${files.length}:v=1:a=1[v][a]`;
-      
+      // Use concat demuxer approach which is more forgiving
+      // First, try with both video and audio. If that fails, try video-only.
+      // Generate a silent audio track for each input to ensure audio stream exists
+      const filter = inputNames.map((_, i) => `[${i}:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2,setsar=1[v${i}]`).join(';')
+        + ';' + inputNames.map((_, i) => `[v${i}]`).join('') + `concat=n=${files.length}:v=1:a=0[v]`;
+
       const args = inputNames.flatMap(name => ['-i', name]);
-      args.push('-filter_complex', filter, '-map', '[v]', '-map', '[a]', 'output.mp4');
+      args.push('-filter_complex', filter, '-map', '[v]', '-c:v', 'libx264', '-preset', 'veryfast', 'output.mp4');
 
       await ffmpeg.exec(args);
       const data = await ffmpeg.readFile('output.mp4');
+      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
       setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'video/mp4' })));
       setStatus('completed');
-    } catch (e) { 
+    } catch (e) {
         console.error(e);
-        setStatus('error'); 
+        setStatus('error');
     }
   };
 

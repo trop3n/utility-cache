@@ -21,7 +21,8 @@ const AudioJoiner: React.FC = () => {
     try {
       const inputNames: string[] = [];
       for (let i = 0; i < files.length; i++) {
-        const name = `input${i}.mp3`;
+        const ext = files[i].name.substring(files[i].name.lastIndexOf('.')) || '.mp3';
+        const name = `input${i}${ext}`;
         await ffmpeg.writeFile(name, await fetchFile(files[i]));
         inputNames.push(name);
       }
@@ -33,7 +34,8 @@ const AudioJoiner: React.FC = () => {
 
       await ffmpeg.exec(args);
       const data = await ffmpeg.readFile('output.mp3');
-      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'audio/mp3' })));
+      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
+      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'audio/mpeg' })));
       setStatus('completed');
     } catch (e) { setStatus('error'); }
   };

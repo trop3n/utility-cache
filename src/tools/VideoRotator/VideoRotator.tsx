@@ -22,6 +22,7 @@ const VideoRotator: React.FC = () => {
       
       await ffmpeg.exec(['-i', inputName, '-vf', filter, '-c:a', 'copy', outputName]);
       const data = await ffmpeg.readFile(outputName);
+      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
       setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'video/mp4' })));
       setStatus('completed');
     } catch (e) { setStatus('error'); }

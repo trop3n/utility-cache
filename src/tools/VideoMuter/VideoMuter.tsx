@@ -31,6 +31,7 @@ const VideoMuter: React.FC = () => {
       const data = await ffmpeg.readFile(outputName);
       const url = URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'video/mp4' }));
       
+      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
       setDownloadUrl(url);
       setStatus('completed');
     } catch (error) {

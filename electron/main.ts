@@ -10,10 +10,21 @@ function createWindow() {
     width: 1200,
     height: 800,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'preload.ts'),
       nodeIntegration: false,
       contextIsolation: true,
     },
+  });
+
+  // Required for SharedArrayBuffer (used by ffmpeg.wasm)
+  win.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        'Cross-Origin-Opener-Policy': ['same-origin'],
+        'Cross-Origin-Embedder-Policy': ['require-corp'],
+      },
+    });
   });
 
   if (process.env.VITE_DEV_SERVER_URL) {

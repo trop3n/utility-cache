@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import * as pdfjs from 'pdfjs-dist';
 import { Document, Packer, Paragraph, TextRun } from 'docx';
-// @ts-ignore
-import { saveAs } from 'file-saver';
 
 // Configure worker
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.mjs`;
@@ -37,21 +35,22 @@ const PDFToOffice: React.FC = () => {
 
       const baseName = file.name.substring(0, file.name.lastIndexOf('.'));
 
-      if (outputFormat === 'txt') {
-          const blob = new Blob([fullText], { type: 'text/plain' });
+      const downloadBlob = (blob: Blob, filename: string) => {
           const url = URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = url;
-          a.download = `${baseName}.txt`;
+          a.download = filename;
           a.click();
+          URL.revokeObjectURL(url);
+      };
+
+      if (outputFormat === 'txt') {
+          const blob = new Blob([fullText], { type: 'text/plain' });
+          downloadBlob(blob, `${baseName}.txt`);
       } else if (outputFormat === 'docx') {
-          // Create DOCX
-          // We split by newlines to make paragraphs
           const paragraphs = fullText.split('\n').map(line => {
-              // Basic sanitization
-              const cleanLine = line.replace(/[^\x00-\x7F]/g, ""); 
               return new Paragraph({
-                  children: [new TextRun(cleanLine)],
+                  children: [new TextRun(line)],
               });
           });
 
@@ -63,19 +62,17 @@ const PDFToOffice: React.FC = () => {
           });
 
           const blob = await Packer.toBlob(doc);
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `${baseName}.docx`;
-          a.click();
+          downloadBlob(blob, `${baseName}.docx`);
       } else if (outputFormat === 'html') {
-          const html = `<html><body><pre>${fullText}</pre></body></html>`;
+          // Escape HTML entities to prevent XSS
+          const escaped = fullText
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;');
+          const html = `<html><body><pre>${escaped}</pre></body></html>`;
           const blob = new Blob([html], { type: 'text/html' });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `${baseName}.html`;
-          a.click();
+          downloadBlob(blob, `${baseName}.html`);
       }
 
     } catch (error) {

@@ -14,7 +14,8 @@ const AudioReverse: React.FC = () => {
       await ffmpeg.writeFile('input', await fetchFile(audioFile));
       await ffmpeg.exec(['-i', 'input', '-af', 'areverse', 'output.mp3']);
       const data = await ffmpeg.readFile('output.mp3');
-      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'audio/mp3' })));
+      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
+      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'audio/mpeg' })));
       setStatus('completed');
     } catch (e) { setStatus('error'); }
   };

@@ -46,11 +46,28 @@ const DocumentConverter: React.FC = () => {
         return;
       }
 
+      // Sanitize HTML: strip script tags and event handlers
+      const sanitizeHtml = (html: string) => {
+        const div = document.createElement('div');
+        div.innerHTML = html;
+        div.querySelectorAll('script, iframe, object, embed, link[rel="import"]').forEach(el => el.remove());
+        div.querySelectorAll('*').forEach(el => {
+          for (const attr of Array.from(el.attributes)) {
+            if (attr.name.startsWith('on') || attr.value.trim().toLowerCase().startsWith('javascript:')) {
+              el.removeAttribute(attr.name);
+            }
+          }
+        });
+        return div.innerHTML;
+      };
+
+      htmlContent = sanitizeHtml(htmlContent);
       setPreviewHtml(htmlContent);
 
       // 2. Convert HTML to Output Format
       if (outputFormat === 'html') {
         const blob = new Blob([htmlContent], { type: 'text/html' });
+        if (downloadUrl) URL.revokeObjectURL(downloadUrl);
         setDownloadUrl(URL.createObjectURL(blob));
       } else if (outputFormat === 'pdf') {
         const element = document.createElement('div');
@@ -76,6 +93,7 @@ const DocumentConverter: React.FC = () => {
              return pdf.output('blob');
         });
         
+        if (downloadUrl) URL.revokeObjectURL(downloadUrl);
         setDownloadUrl(URL.createObjectURL(blob));
       }
 

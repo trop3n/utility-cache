@@ -36,8 +36,10 @@ const VideoToAudio: React.FC = () => {
       await ffmpeg.exec(args);
 
       const data = await ffmpeg.readFile(outputName);
-      const url = URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: `audio/${outputFormat}` }));
-      
+      const mimeTypes: Record<string, string> = { mp3: 'audio/mpeg', wav: 'audio/wav' };
+      const url = URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: mimeTypes[outputFormat] || `audio/${outputFormat}` }));
+
+      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
       setDownloadUrl(url);
       setStatus('completed');
     } catch (error) {

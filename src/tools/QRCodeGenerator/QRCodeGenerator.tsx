@@ -20,7 +20,7 @@ const QRCodeGenerator: React.FC = () => {
     img.onload = () => {
       canvas.width = size;
       canvas.height = size;
-      ctx?.drawImage(img, 0, 0);
+      ctx?.drawImage(img, 0, 0, size, size);
       const pngFile = canvas.toDataURL('image/png');
       const downloadLink = document.createElement('a');
       downloadLink.download = 'qrcode.png';
@@ -28,7 +28,9 @@ const QRCodeGenerator: React.FC = () => {
       downloadLink.click();
     };
 
-    img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
+    // Use encodeURIComponent + unescape for Unicode-safe base64 encoding
+    const base64 = btoa(unescape(encodeURIComponent(svgData)));
+    img.src = 'data:image/svg+xml;base64,' + base64;
   };
 
   return (

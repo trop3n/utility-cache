@@ -61,13 +61,13 @@ const FontConverter: React.FC = () => {
     <div style={{ maxWidth: '800px', margin: '0 auto' }}>
       <h2>Font Viewer</h2>
       <p style={{ color: '#888', marginBottom: '20px' }}>
-        Inspect TTF/OTF/WOFF fonts and preview glyphs.
+        Inspect TTF/OTF/WOFF fonts and preview glyphs. (WOFF2 is not supported.)
       </p>
 
       <div style={{ marginBottom: '20px', border: '2px dashed #444', padding: '40px', textAlign: 'center', borderRadius: '12px' }}>
         <input 
           type="file" 
-          accept=".ttf,.otf,.woff,.woff2" 
+          accept=".ttf,.otf,.woff"
           onChange={handleFileChange} 
           style={{ display: 'none' }} 
           id="font-upload"

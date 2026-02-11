@@ -29,7 +29,20 @@ const ExcelToPDF: React.FC = () => {
       // Convert first sheet to HTML
       const firstSheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[firstSheetName];
-      const html = XLSX.utils.sheet_to_html(worksheet);
+      const rawHtml = XLSX.utils.sheet_to_html(worksheet);
+
+      // Sanitize: strip any script tags or event handlers from cell content
+      const div = document.createElement('div');
+      div.innerHTML = rawHtml;
+      div.querySelectorAll('script, iframe, object, embed').forEach(el => el.remove());
+      div.querySelectorAll('*').forEach(el => {
+        for (const attr of Array.from(el.attributes)) {
+          if (attr.name.startsWith('on') || attr.value.trim().toLowerCase().startsWith('javascript:')) {
+            el.removeAttribute(attr.name);
+          }
+        }
+      });
+      const html = div.innerHTML;
 
       setPreviewHtml(html);
 
@@ -59,6 +72,7 @@ const ExcelToPDF: React.FC = () => {
            return pdf.output('blob');
       });
       
+      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
       setDownloadUrl(URL.createObjectURL(blob));
 
     } catch (error) {

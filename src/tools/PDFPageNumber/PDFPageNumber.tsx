@@ -30,8 +30,9 @@ const PDFPageNumber: React.FC = () => {
       const totalPages = pages.length;
 
       pages.forEach((page, index) => {
-        const pageNum = startNumber + index;
-        const text = format === 'of' ? `Page ${pageNum} of ${totalPages}` : `${pageNum}`;
+        const pageNum = (startNumber || 1) + index;
+        const adjustedTotal = totalPages + (startNumber || 1) - 1;
+        const text = format === 'of' ? `Page ${pageNum} of ${adjustedTotal}` : `${pageNum}`;
         const textSize = 12;
         const textWidth = helveticaFont.widthOfTextAtSize(text, textSize);
         const { width, height } = page.getSize();
@@ -78,6 +79,7 @@ const PDFPageNumber: React.FC = () => {
 
       const pdfBytes = await pdfDoc.save();
       const blob = new Blob([pdfBytes as any], { type: 'application/pdf' });
+      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
       setDownloadUrl(URL.createObjectURL(blob));
     } catch (error) {
       console.error('Error adding page numbers:', error);
@@ -142,7 +144,7 @@ const PDFPageNumber: React.FC = () => {
                  <input
                     type="number"
                     value={startNumber}
-                    onChange={(e) => setStartNumber(parseInt(e.target.value))}
+                    onChange={(e) => setStartNumber(parseInt(e.target.value) || 1)}
                     min="1"
                     style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #444', background: '#222', color: 'white' }}
                 />

@@ -43,6 +43,7 @@ const HapEncoder: React.FC = () => {
       const blob = new Blob([(data as Uint8Array).buffer as any], { type: 'video/quicktime' });
       const url = URL.createObjectURL(blob);
       
+      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
       setDownloadUrl(url);
       setStatus('completed');
     } catch (error) {
@@ -57,6 +58,12 @@ const HapEncoder: React.FC = () => {
       <p style={{ color: '#888', marginBottom: '20px' }}>
         Convert videos to HAP, HAP Alpha, or HAP Q codec (.mov) for high-performance playback.
       </p>
+
+      <div style={{ backgroundColor: 'rgba(243, 156, 18, 0.1)', padding: '15px', borderRadius: '8px', marginBottom: '20px', color: '#e67e22', fontSize: '0.9rem' }}>
+        <strong>Note:</strong> The HAP codec requires a custom FFmpeg build. The standard browser-based FFmpeg.wasm
+        does not include HAP support. This tool will work in the Electron desktop version with a system FFmpeg
+        installation that includes the HAP encoder, but may fail in the browser version.
+      </div>
 
       {!loaded && (
         <div style={{ textAlign: 'center', marginBottom: '20px' }}>

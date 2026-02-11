@@ -108,7 +108,7 @@ const ImageConverter: React.FC = () => {
               </select>
            </div>
            
-           {format === 'image/jpeg' || format === 'image/webp' ? (
+           {(format === 'image/jpeg' || format === 'image/webp') ? (
              <div style={{ marginBottom: '20px' }}>
                 <label style={{ marginRight: '10px' }}>Quality ({Math.round(quality * 100)}%):</label>
                 <input type="range" min="0.1" max="1.0" step="0.01" value={quality} onChange={e => setQuality(parseFloat(e.target.value))} />

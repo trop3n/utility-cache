@@ -51,13 +51,16 @@ const PDFUnlock: React.FC = () => {
         canvas.width = viewport.width;
 
         await page.render({ canvasContext: context, viewport } as any).promise;
-        const imageDataUrl = canvas.toDataURL('image/png');
-        
-        // Convert data URL to bytes
-        const imageBytes = await fetch(imageDataUrl).then(res => res.arrayBuffer());
-        
-        // Embed image in new PDF
-        const embeddedImage = await newPdfDoc.embedPng(imageBytes);
+
+        // Use toBlob for better memory efficiency (avoids data URL round-trip)
+        const imageBytes = await new Promise<ArrayBuffer>((resolve, reject) => {
+          canvas.toBlob((blob) => {
+            if (blob) blob.arrayBuffer().then(resolve).catch(reject);
+            else reject(new Error('Failed to create blob'));
+          }, 'image/jpeg', 0.92);
+        });
+
+        const embeddedImage = await newPdfDoc.embedJpg(new Uint8Array(imageBytes));
         const { width, height } = embeddedImage.scale(1 / scale);
         
         const newPage = newPdfDoc.addPage([width, height]);
@@ -72,6 +75,7 @@ const PDFUnlock: React.FC = () => {
       const pdfBytes = await newPdfDoc.save();
       // Fix Blob type error by casting or using just buffer
       const blob = new Blob([pdfBytes as any], { type: 'application/pdf' });
+      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
       setDownloadUrl(URL.createObjectURL(blob));
     } catch (err: any) {
       console.error('Error unlocking PDF:', err);

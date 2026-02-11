@@ -87,7 +87,7 @@ const AudioConverter: React.FC = () => {
             if (fadeIn > 0 || fadeOut > 0) {
                 const duration = await getAudioDuration(file);
                 if (duration > 0) {
-                    if (fadeIn > 0) filters.push(`afade=t=in:ss=0:d=${fadeIn}`);
+                    if (fadeIn > 0) filters.push(`afade=t=in:st=0:d=${fadeIn}`);
                     if (fadeOut > 0) filters.push(`afade=t=out:st=${Math.max(0, duration - fadeOut)}:d=${fadeOut}`);
                 }
             }
@@ -106,7 +106,14 @@ const AudioConverter: React.FC = () => {
             // Cleanup output (after reading)
              try { await ffmpeg.deleteFile(outputName); } catch (e) {}
 
-            const blob = new Blob([(data as Uint8Array).buffer as any], { type: `audio/${format}` });
+            const mimeTypes: Record<string, string> = {
+                mp3: 'audio/mpeg',
+                m4a: 'audio/mp4',
+                ogg: 'audio/ogg',
+                flac: 'audio/flac',
+                wav: 'audio/wav',
+            };
+            const blob = new Blob([(data as Uint8Array).buffer as any], { type: mimeTypes[format] || `audio/${format}` });
             const url = URL.createObjectURL(blob);
             results.push({
                 name: file.name.substring(0, file.name.lastIndexOf('.')) + '.' + format,

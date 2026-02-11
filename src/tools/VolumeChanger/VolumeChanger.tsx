@@ -17,7 +17,8 @@ const VolumeChanger: React.FC = () => {
       await ffmpeg.writeFile(inputName, await fetchFile(audioFile));
       await ffmpeg.exec(['-i', inputName, '-filter:a', `volume=${volume}`, outputName]);
       const data = await ffmpeg.readFile(outputName);
-      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'audio/mp3' })));
+      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
+      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'audio/mpeg' })));
       setStatus('completed');
     } catch (e) { setStatus('error'); }
   };

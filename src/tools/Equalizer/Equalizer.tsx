@@ -42,7 +42,8 @@ const Equalizer: React.FC = () => {
 
       await ffmpeg.exec(['-i', inputName, '-af', filterChain, outputName]);
       const data = await ffmpeg.readFile(outputName);
-      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'audio/mp3' })));
+      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
+      setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'audio/mpeg' })));
       setStatus('completed');
     } catch (e) { 
         console.error(e);

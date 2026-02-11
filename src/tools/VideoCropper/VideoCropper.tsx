@@ -26,6 +26,10 @@ const VideoCropper: React.FC = () => {
       // Get dimensions via video element
       const url = URL.createObjectURL(file);
       if (videoRef.current) {
+        // Revoke previous preview URL
+        if (videoRef.current.src && videoRef.current.src.startsWith('blob:')) {
+          URL.revokeObjectURL(videoRef.current.src);
+        }
         videoRef.current.src = url;
       }
     }
@@ -56,6 +60,7 @@ const VideoCropper: React.FC = () => {
       // crop=w:h:x:y
       await ffmpeg.exec(['-i', inputName, '-vf', `crop=${cropW}:${cropH}:${cropX}:${cropY}`, '-c:a', 'copy', outputName]);
       const data = await ffmpeg.readFile(outputName);
+      if (downloadUrl) URL.revokeObjectURL(downloadUrl);
       setDownloadUrl(URL.createObjectURL(new Blob([(data as Uint8Array).buffer as any], { type: 'video/mp4' })));
       setStatus('completed');
     } catch (error) {

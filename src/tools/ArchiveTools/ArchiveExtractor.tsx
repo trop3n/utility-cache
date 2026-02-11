@@ -65,7 +65,7 @@ const ArchiveExtractor: React.FC = () => {
              {entries.map((item: any, i) => (
                <li key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px', borderBottom: '1px solid #333' }}>
                  <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    <span style={{ marginRight: '10px' }}>{item.dir ? 'UBK folder' : '📄'}</span>
+                    <span style={{ marginRight: '10px' }}>{item.dir ? '\uD83D\uDCC1' : '\uD83D\uDCC4'}</span>
                     <span>{item.name}</span>
                  </div>
                  {!item.dir && (

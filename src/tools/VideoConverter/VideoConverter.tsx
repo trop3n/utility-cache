@@ -64,15 +64,18 @@ const VideoConverter: React.FC = () => {
 
             // Codecs
             if (format === 'gif') {
-                // GIF special handling for better quality
-                // args.push('-vf', `fps=10,scale=${resolution === 'original' ? '320:-1' : '-2:'+resolution}:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse`);
-                // Simple GIF for now
-                if (resolution !== 'original') {
-                     // already added scale above if not original, but GIF usually needs smaller size
+                // GIF with palette generation for better quality
+                const scaleFilter = resolution !== 'original' ? `scale=-2:${resolution}:flags=lanczos,` : '';
+                // Remove any previously added -vf scale (we'll use filter_complex instead)
+                const vfIndex = args.indexOf('-vf');
+                if (vfIndex !== -1) {
+                    args.splice(vfIndex, 2);
                 }
+                args.push('-filter_complex', `[0:v]${scaleFilter}fps=10,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse`);
+                args.push('-an');
             } else {
                 args.push('-c:v', videoCodec);
-                
+
                 if (removeAudio) {
                     args.push('-an');
                 } else {
@@ -80,16 +83,13 @@ const VideoConverter: React.FC = () => {
                 }
 
                 // CRF / Quality
-                // Only for x264/x265/vp9 usually.
-                if (videoCodec === 'libx264' || videoCodec === 'libvpx' || videoCodec === 'libvpx-vp9') {
-                    args.push('-crf', quality.toString());
-                } else if (videoCodec === 'mpeg4') {
-                    args.push('-q:v', Math.max(2, 31 - quality).toString()); // mpeg4 qscale 1-31
-                }
-                
-                // Presets for speed
                 if (videoCodec === 'libx264') {
+                    args.push('-crf', quality.toString());
                     args.push('-preset', 'veryfast');
+                } else if (videoCodec === 'libvpx' || videoCodec === 'libvpx-vp9') {
+                    args.push('-crf', quality.toString(), '-b:v', '0');
+                } else if (videoCodec === 'mpeg4') {
+                    args.push('-q:v', Math.max(2, 31 - quality).toString());
                 }
             }
 
@@ -102,7 +102,16 @@ const VideoConverter: React.FC = () => {
             try { await ffmpeg.deleteFile(inputName); } catch (e) {}
             try { await ffmpeg.deleteFile(outputName); } catch (e) {}
 
-            const blob = new Blob([(data as Uint8Array).buffer as any], { type: `video/${format}` });
+            const mimeTypes: Record<string, string> = {
+                mp4: 'video/mp4',
+                webm: 'video/webm',
+                avi: 'video/x-msvideo',
+                mov: 'video/quicktime',
+                mkv: 'video/x-matroska',
+                gif: 'image/gif',
+                mpeg: 'video/mpeg',
+            };
+            const blob = new Blob([(data as Uint8Array).buffer as any], { type: mimeTypes[format] || `video/${format}` });
             const url = URL.createObjectURL(blob);
             results.push({
                 name: getOutputFilename(file.name, format),
@@ -151,6 +160,9 @@ const VideoConverter: React.FC = () => {
       } else if (newFormat === 'mkv') {
           setVideoCodec('libx264');
           setAudioCodec('aac');
+      } else if (newFormat === 'mpeg') {
+          setVideoCodec('mpeg4');
+          setAudioCodec('libmp3lame');
       }
   };
 
