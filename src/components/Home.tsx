@@ -9,6 +9,7 @@ interface Tool {
 }
 
 interface ToolCategory {
+  id: string;
   name: string;
   tools: Tool[];
 }
@@ -18,6 +19,7 @@ const Home: React.FC = () => {
 
   const categories: ToolCategory[] = [
     {
+      id: 'video',
       name: 'Video Tools',
       tools: [
         {
@@ -95,6 +97,7 @@ const Home: React.FC = () => {
       ]
     },
     {
+      id: 'audio',
       name: 'Audio Tools',
       tools: [
         {
@@ -148,6 +151,7 @@ const Home: React.FC = () => {
       ]
     },
     {
+      id: 'image',
       name: 'Image Tools',
       tools: [
         {
@@ -177,6 +181,7 @@ const Home: React.FC = () => {
       ]
     },
     {
+      id: 'pdf',
       name: 'PDF Tools',
       tools: [
         {
@@ -224,6 +229,7 @@ const Home: React.FC = () => {
       ]
     },
     {
+      id: 'converters',
       name: 'Converters',
       tools: [
         {
@@ -259,6 +265,7 @@ const Home: React.FC = () => {
       ]
     },
     {
+      id: 'utilities',
       name: 'Utilities',
       tools: [
         {
@@ -280,7 +287,7 @@ const Home: React.FC = () => {
   return (
     <div className="home-container">
       {categories.map((category) => (
-        <section key={category.name} className="tool-category">
+        <section key={category.id} id={category.id} className="tool-category">
           <h2 className="category-header">{category.name}</h2>
           <div className="home-grid">
             {category.tools.map((tool) => (
