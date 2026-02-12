@@ -93,6 +93,12 @@ const Home: React.FC = () => {
           title: 'Screen & Camera Recorder',
           description: 'Record your screen or webcam directly from the browser.',
           icon: 'record'
+        },
+        {
+          path: '/video-downloader',
+          title: 'Video URL Downloader',
+          description: 'Download videos from direct URLs (MP4, WebM, etc.).',
+          icon: 'download'
         }
       ]
     },
