@@ -21,11 +21,27 @@
   padding: 1rem;
 }
 
+.home-container {
+  padding: 1rem;
+}
+
+.tool-category {
+  margin-bottom: 2.5rem;
+}
+
+.category-header {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #646cff;
+  color: #646cff;
+}
+
 .home-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
-  padding: 1rem;
 }
 
 .tool-card {
@@ -69,6 +85,10 @@
   }
   .tool-card p {
     color: #666;
+  }
+  .category-header {
+    color: #4f46e5;
+    border-bottom-color: #4f46e5;
   }
 }
 
