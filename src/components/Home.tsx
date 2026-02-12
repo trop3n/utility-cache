@@ -99,6 +99,12 @@ const Home: React.FC = () => {
           title: 'Video URL Downloader',
           description: 'Download videos from direct URLs (MP4, WebM, etc.).',
           icon: 'download'
+        },
+        {
+          path: '/add-audio-to-video',
+          title: 'Add Audio to Video',
+          description: 'Add or replace audio tracks in video files.',
+          icon: 'music'
         }
       ]
     },
@@ -284,6 +290,12 @@ const Home: React.FC = () => {
           path: '/font-converter',
           title: 'Font Viewer',
           description: 'Inspect and preview TTF/OTF/WOFF fonts.',
+          icon: 'font'
+        },
+        {
+          path: '/font-converter-tool',
+          title: 'Font Converter',
+          description: 'Convert between TTF, OTF, and WOFF formats.',
           icon: 'font'
         }
       ]
