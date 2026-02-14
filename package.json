@@ -9,7 +9,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "electron:dev": "concurrently \"npm run dev\" \"wait-on http://localhost:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 npx tsx electron/main.ts\""
+    "electron:dev": "npm exec concurrently -- \"npm exec vite\" \"npm exec wait-on -- http://localhost:5173 && npm exec cross-env -- VITE_DEV_SERVER_URL=http://localhost:5173 npm exec electron -- electron/main.ts\""
   },
   "dependencies": {
     "@ffmpeg/ffmpeg": "^0.12.15",

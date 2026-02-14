@@ -39,6 +39,9 @@ import FontConverter from './tools/FontConverter/FontConverter'
 import EbookConverter from './tools/EbookConverter/EbookConverter'
 import ExcelToPDF from './tools/ExcelToPDF/ExcelToPDF'
 import PDFToOffice from './tools/PDFToOffice/PDFToOffice'
+import VideoUrlDownloader from './tools/VideoUrlDownloader/VideoUrlDownloader'
+import AddAudioToVideo from './tools/AddAudioToVideo/AddAudioToVideo'
+import FontConverterTool from './tools/FontConverterTool/FontConverterTool'
 import './App.css'
 
 function App() {
@@ -85,6 +88,9 @@ function App() {
           <Route path="/pdf-protect" element={<PDFProtect />} />
           <Route path="/pdf-unlock" element={<PDFUnlock />} />
           <Route path="/pdf-page-number" element={<PDFPageNumber />} />
+          <Route path="/video-downloader" element={<VideoUrlDownloader />} />
+          <Route path="/add-audio-to-video" element={<AddAudioToVideo />} />
+          <Route path="/font-converter-tool" element={<FontConverterTool />} />
         </Routes>
       </Layout>
     </Router>

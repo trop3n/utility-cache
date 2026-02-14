@@ -1,15 +1,43 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    if (path.startsWith('/#')) {
+      e.preventDefault();
+      const targetId = path.slice(2); // Remove '/#' to get the id
+      
+      // If not on home page, navigate to home first
+      if (location.pathname !== '/') {
+        navigate('/');
+        // Wait for navigation to complete, then scroll
+        setTimeout(() => {
+          const element = document.getElementById(targetId);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 100);
+      } else {
+        // Already on home page, just scroll
+        const element = document.getElementById(targetId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    }
+  };
 
   const navItems = [
     { path: '/', label: 'Home' },
-    { path: '/text-converter', label: 'Text' },
-    { path: '/image-resizer', label: 'Image' },
-    { path: '/qrcode', label: 'QR' },
-    { path: '/video-converter', label: 'Video' },
+    { path: '/#video', label: 'Video' },
+    { path: '/#audio', label: 'Audio' },
+    { path: '/#image', label: 'Image' },
+    { path: '/#pdf', label: 'PDF' },
+    { path: '/#converters', label: 'Converters' },
+    { path: '/#utilities', label: 'Utilities' },
   ];
 
   return (
@@ -23,10 +51,11 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <Link
               key={item.path}
               to={item.path}
+              onClick={(e) => handleNavClick(e, item.path)}
               style={{
-                color: location.pathname === item.path ? '#646cff' : 'inherit',
+                color: location.pathname === item.path && !item.path.startsWith('/#') ? '#646cff' : 'inherit',
                 textDecoration: 'none',
-                fontWeight: location.pathname === item.path ? 'bold' : 'normal',
+                fontWeight: location.pathname === item.path && !item.path.startsWith('/#') ? 'bold' : 'normal',
               }}
             >
               {item.label}
