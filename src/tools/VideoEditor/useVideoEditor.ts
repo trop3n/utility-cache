@@ -54,6 +54,7 @@ export const useVideoEditor = () => {
   const animationFrameRef = useRef<number | null>(null);
   const playStartTimeRef = useRef<number>(0);
   const playClipTimeRef = useRef<number>(0);
+  const currentClipFileRef = useRef<File | null>(null);
 
   const totalDuration = state.clips.reduce((acc, clip) => acc + (clip.endTime - clip.startTime), 0);
 
@@ -168,8 +169,9 @@ export const useVideoEditor = () => {
     const { clip, clipTime } = result;
     const video = previewVideoRef.current;
 
-    if (video.src !== URL.createObjectURL(clip.file)) {
+    if (currentClipFileRef.current !== clip.file) {
       video.src = URL.createObjectURL(clip.file);
+      currentClipFileRef.current = clip.file;
     }
 
     if (Math.abs(video.currentTime - clipTime) > 0.1) {
@@ -219,7 +221,10 @@ export const useVideoEditor = () => {
     const result = findClipAtTime(clampedTime);
     if (result && previewVideoRef.current) {
       const { clip, clipTime } = result;
-      previewVideoRef.current.src = URL.createObjectURL(clip.file);
+      if (currentClipFileRef.current !== clip.file) {
+        previewVideoRef.current.src = URL.createObjectURL(clip.file);
+        currentClipFileRef.current = clip.file;
+      }
       previewVideoRef.current.currentTime = clipTime;
     }
   }, [pause, totalDuration, findClipAtTime]);

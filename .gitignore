@@ -48,3 +48,4 @@ vite.config.ts.timestamp-*
 
 # Project specific
 .gemini/
+AGENTS.md
