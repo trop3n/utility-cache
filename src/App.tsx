@@ -34,6 +34,7 @@ import VideoCropper from './tools/VideoCropper/VideoCropper'
 import ImageConverter from './tools/ImageConverter/ImageConverter'
 import ArchiveExtractor from './tools/ArchiveTools/ArchiveExtractor'
 import HapEncoder from './tools/HapEncoder/HapEncoder'
+import VideoEditor from './tools/VideoEditor/VideoEditor'
 import DocumentConverter from './tools/DocumentConverter/DocumentConverter'
 import FontConverter from './tools/FontConverter/FontConverter'
 import EbookConverter from './tools/EbookConverter/EbookConverter'
@@ -75,6 +76,7 @@ function App() {
           <Route path="/image-converter" element={<ImageConverter />} />
           <Route path="/archive-extractor" element={<ArchiveExtractor />} />
           <Route path="/hap-encoder" element={<HapEncoder />} />
+          <Route path="/video-editor" element={<VideoEditor />} />
           <Route path="/document-converter" element={<DocumentConverter />} />
           <Route path="/font-converter" element={<FontConverter />} />
           <Route path="/ebook-converter" element={<EbookConverter />} />

@@ -105,6 +105,12 @@ const Home: React.FC = () => {
           title: 'Add Audio to Video',
           description: 'Add or replace audio tracks in video files.',
           icon: 'music'
+        },
+        {
+          path: '/video-editor',
+          title: 'Video Editor',
+          description: 'Timeline-based video editor with trim, reorder, and export.',
+          icon: 'film'
         }
       ]
     },
